@@ -1,0 +1,73 @@
+@using Microsoft.AspNetCore.Components
+
+<div class="st-button-group">
+    <button @onclick="OnClick" class="btn @ButtonClass" disabled="@Disabled">
+        @if (!string.IsNullOrEmpty(Icon))
+        {
+            <i class="@Icon"></i>
+        }
+        @Text
+    </button>
+</div>
+
+@code {
+    [Parameter] public string Text { get; set; } = "Button";
+    [Parameter] public string ButtonType { get; set; } = "primary"; // primary, secondary, success, danger, warning, info
+    [Parameter] public string Icon { get; set; } = "";
+    [Parameter] public bool Disabled { get; set; } = false;
+    [Parameter] public EventCallback OnClick { get; set; }
+
+    private string ButtonClass => $"btn-{ButtonType}";
+}
+
+<style>
+    .st-button-group {
+        margin: 1rem 0;
+    }
+    
+    .btn {
+        padding: 0.5rem 1rem;
+        border-radius: 0.375rem;
+        border: 1px solid transparent;
+        font-size: 1rem;
+        font-weight: 400;
+        text-align: center;
+        text-decoration: none;
+        cursor: pointer;
+        transition: all 0.15s ease-in-out;
+    }
+    
+    .btn-primary {
+        background-color: #0d6efd;
+        border-color: #0d6efd;
+        color: white;
+    }
+    
+    .btn-primary:hover {
+        background-color: #0b5ed7;
+        border-color: #0a58ca;
+    }
+    
+    .btn-secondary {
+        background-color: #6c757d;
+        border-color: #6c757d;
+        color: white;
+    }
+    
+    .btn-success {
+        background-color: #198754;
+        border-color: #198754;
+        color: white;
+    }
+    
+    .btn-danger {
+        background-color: #dc3545;
+        border-color: #dc3545;
+        color: white;
+    }
+    
+    .btn:disabled {
+        opacity: 0.65;
+        cursor: not-allowed;
+    }
+</style>

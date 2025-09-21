@@ -1,0 +1,40 @@
+@using Microsoft.AspNetCore.Components
+
+<div class="streamlit-container">
+    <div class="card">
+        <div class="card-header">
+            <h4 class="mb-0">@Title</h4>
+        </div>
+        <div class="card-body">
+            @ChildContent
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public string Title { get; set; } = "";
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}
+
+<style>
+    .streamlit-container {
+        margin: 1rem 0;
+    }
+    
+    .card {
+        border: 1px solid #e0e0e0;
+        border-radius: 0.5rem;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .card-header {
+        background-color: #f8f9fa;
+        border-bottom: 1px solid #e0e0e0;
+        padding: 1rem;
+        border-radius: 0.5rem 0.5rem 0 0;
+    }
+    
+    .card-body {
+        padding: 1rem;
+    }
+</style>

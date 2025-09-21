@@ -1,0 +1,95 @@
+@using Microsoft.AspNetCore.Components
+
+<div class="st-metric-container">
+    <div class="metric-card">
+        <div class="metric-label">@Label</div>
+        <div class="metric-value">@Value</div>
+        @if (!string.IsNullOrEmpty(Delta))
+        {
+            <div class="metric-delta @DeltaClass">
+                @if (DeltaColor == "normal")
+                {
+                    <span>@Delta</span>
+                }
+                else if (DeltaColor == "positive")
+                {
+                    <span class="positive">↗️ @Delta</span>
+                }
+                else if (DeltaColor == "negative")
+                {
+                    <span class="negative">↘️ @Delta</span>
+                }
+            </div>
+        }
+        @if (!string.IsNullOrEmpty(Help))
+        {
+            <div class="metric-help">@Help</div>
+        }
+    </div>
+</div>
+
+@code {
+    [Parameter] public string Label { get; set; } = "";
+    [Parameter] public string Value { get; set; } = "";
+    [Parameter] public string Delta { get; set; } = "";
+    [Parameter] public string DeltaColor { get; set; } = "normal"; // normal, positive, negative
+    [Parameter] public string Help { get; set; } = "";
+
+    private string DeltaClass => DeltaColor switch
+    {
+        "positive" => "delta-positive",
+        "negative" => "delta-negative",
+        _ => "delta-normal"
+    };
+}
+
+<style>
+    .st-metric-container {
+        margin: 1rem 0;
+    }
+    
+    .metric-card {
+        background: white;
+        border: 1px solid #e0e0e0;
+        border-radius: 0.5rem;
+        padding: 1rem;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    
+    .metric-label {
+        font-size: 0.875rem;
+        color: #666;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+    }
+    
+    .metric-value {
+        font-size: 2rem;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 0.25rem;
+    }
+    
+    .metric-delta {
+        font-size: 0.875rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .delta-positive .positive {
+        color: #198754;
+    }
+    
+    .delta-negative .negative {
+        color: #dc3545;
+    }
+    
+    .delta-normal {
+        color: #666;
+    }
+    
+    .metric-help {
+        font-size: 0.75rem;
+        color: #999;
+        font-style: italic;
+    }
+</style>

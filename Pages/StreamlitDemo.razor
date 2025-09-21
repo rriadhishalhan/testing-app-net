@@ -1,0 +1,229 @@
+@page "/streamlit-demo"
+@using StreamlitLikeApp.Components.StreamlitLike
+@using StreamlitLikeApp.Services
+@inject StreamlitService St
+
+<PageTitle>Streamlit-like Demo</PageTitle>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <h1>🚀 Streamlit-like Demo in .NET Blazor</h1>
+            <p class="lead">This demo showcases interactive UI components similar to Python's Streamlit library.</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <StContainer Title="User Input">
+                <StTextInput Label="Enter your name" 
+                           Placeholder="Type your name here..." 
+                           @bind-Value="userName" />
+                
+                <StSlider Label="Select your age" 
+                        Min="0" Max="120" Step="1" 
+                        @bind-Value="userAge" />
+                
+                <StSelectbox Label="Choose your favorite color" 
+                           Options="@colorOptions" 
+                           @bind-SelectedValue="favoriteColor" />
+                
+                <StButton Text="Submit" 
+                        ButtonType="primary" 
+                        OnClick="ProcessUserInput" />
+            </StContainer>
+        </div>
+        
+        <div class="col-md-6">
+            <StContainer Title="Live Results">
+                @if (!string.IsNullOrEmpty(userName))
+                {
+                    <div class="alert alert-info">
+                        <strong>Hello, @userName!</strong><br />
+                        Age: @userAge years old<br />
+                        Favorite Color: @favoriteColor
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-secondary">
+                        Enter your information to see results here.
+                    </div>
+                }
+            </StContainer>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <StMetric Label="Total Users" 
+                    Value="@totalUsers.ToString()" 
+                    Delta="+12" 
+                    DeltaColor="positive" 
+                    Help="Number of users who submitted the form" />
+        </div>
+        
+        <div class="col-md-4">
+            <StMetric Label="Average Age" 
+                    Value="@averageAge.ToString("F1")" 
+                    Delta="-2.3" 
+                    DeltaColor="negative" 
+                    Help="Average age of all users" />
+        </div>
+        
+        <div class="col-md-4">
+            <StMetric Label="Most Popular Color" 
+                    Value="@mostPopularColor" 
+                    Help="Most frequently chosen color" />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <StContainer Title="Interactive Calculator">
+                <div class="row">
+                    <div class="col-md-6">
+                        <StSlider Label="First Number" 
+                                Min="0" Max="100" Step="1" 
+                                @bind-Value="firstNumber" />
+                        
+                        <StSlider Label="Second Number" 
+                                Min="0" Max="100" Step="1" 
+                                @bind-Value="secondNumber" />
+                        
+                        <StSelectbox Label="Operation" 
+                                   Options="@operationOptions" 
+                                   @bind-SelectedValue="selectedOperation" />
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="calculation-result">
+                            <h3>Result</h3>
+                            <div class="result-display">
+                                @firstNumber @GetOperationSymbol() @secondNumber = <strong>@CalculateResult()</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </StContainer>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <StContainer Title="Chart Visualization">
+                <StChart Title="Sample Data Visualization" 
+                       ChartType="line" 
+                       Data="@chartData" 
+                       Width="600" 
+                       Height="400" />
+                <p class="text-muted">This is a placeholder for chart functionality. In a full implementation, this would render interactive charts using Chart.js or similar library.</p>
+            </StContainer>
+        </div>
+    </div>
+</div>
+
+@code {
+    // User input variables
+    private string userName = "";
+    private double userAge = 25;
+    private string favoriteColor = "Blue";
+    
+    // Calculator variables
+    private double firstNumber = 10;
+    private double secondNumber = 5;
+    private string selectedOperation = "Add";
+    
+    // Demo data
+    private int totalUsers = 156;
+    private double averageAge = 32.4;
+    private string mostPopularColor = "Blue";
+    
+    // Options for dropdowns
+    private readonly List<string> colorOptions = new() { "Red", "Blue", "Green", "Yellow", "Purple", "Orange" };
+    private readonly List<string> operationOptions = new() { "Add", "Subtract", "Multiply", "Divide" };
+    
+    // Chart data (placeholder)
+    private readonly object chartData = new { };
+
+    protected override void OnInitialized()
+    {
+        // Initialize with saved state if available
+        userName = St.GetState("userName", "");
+        userAge = St.GetState("userAge", 25.0);
+        favoriteColor = St.GetState("favoriteColor", "Blue");
+    }
+
+    private void ProcessUserInput()
+    {
+        // Save state
+        St.SetState("userName", userName);
+        St.SetState("userAge", userAge);
+        St.SetState("favoriteColor", favoriteColor);
+        
+        // Simulate updating metrics
+        totalUsers++;
+        averageAge = (averageAge * (totalUsers - 1) + userAge) / totalUsers;
+        
+        StateHasChanged();
+    }
+    
+    private string GetOperationSymbol()
+    {
+        return selectedOperation switch
+        {
+            "Add" => "+",
+            "Subtract" => "-",
+            "Multiply" => "×",
+            "Divide" => "÷",
+            _ => "+"
+        };
+    }
+    
+    private double CalculateResult()
+    {
+        return selectedOperation switch
+        {
+            "Add" => firstNumber + secondNumber,
+            "Subtract" => firstNumber - secondNumber,
+            "Multiply" => firstNumber * secondNumber,
+            "Divide" => secondNumber != 0 ? firstNumber / secondNumber : 0,
+            _ => 0
+        };
+    }
+}
+
+<style>
+    .calculation-result {
+        background: #f8f9fa;
+        border: 1px solid #e9ecef;
+        border-radius: 0.5rem;
+        padding: 1rem;
+        margin-top: 1rem;
+    }
+    
+    .result-display {
+        font-size: 1.25rem;
+        color: #333;
+        margin-top: 0.5rem;
+        font-family: monospace;
+    }
+    
+    .alert {
+        border-radius: 0.5rem;
+        padding: 1rem;
+        margin: 1rem 0;
+    }
+    
+    .alert-info {
+        background-color: #d1ecf1;
+        border-color: #bee5eb;
+        color: #0c5460;
+    }
+    
+    .alert-secondary {
+        background-color: #f8f9fa;
+        border-color: #e9ecef;
+        color: #6c757d;
+    }
+</style>

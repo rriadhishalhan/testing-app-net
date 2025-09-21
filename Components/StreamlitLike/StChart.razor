@@ -1,0 +1,63 @@
+@using Microsoft.AspNetCore.Components
+
+<div class="st-chart-container">
+    <div class="chart-header">
+        <h5>@Title</h5>
+    </div>
+    <div class="chart-content">
+        <canvas id="@ChartId" width="@Width" height="@Height"></canvas>
+    </div>
+</div>
+
+@code {
+    [Parameter] public string Title { get; set; } = "";
+    [Parameter] public string ChartType { get; set; } = "line"; // line, bar, pie
+    [Parameter] public object? Data { get; set; }
+    [Parameter] public int Width { get; set; } = 400;
+    [Parameter] public int Height { get; set; } = 300;
+    
+    private string ChartId = Guid.NewGuid().ToString();
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender && Data != null)
+        {
+            // Here you would integrate with Chart.js or similar library
+            // For demo purposes, we'll draw a simple chart
+            await DrawSimpleChart();
+        }
+    }
+
+    private async Task DrawSimpleChart()
+    {
+        // This is a placeholder for chart rendering
+        // In a real implementation, you'd use Chart.js, D3.js, or similar
+        await Task.CompletedTask;
+    }
+}
+
+<style>
+    .st-chart-container {
+        margin: 1rem 0;
+        background: white;
+        border: 1px solid #e0e0e0;
+        border-radius: 0.5rem;
+        padding: 1rem;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    
+    .chart-header h5 {
+        margin: 0 0 1rem 0;
+        color: #333;
+        font-weight: 500;
+    }
+    
+    .chart-content {
+        text-align: center;
+    }
+    
+    canvas {
+        border: 1px solid #ddd;
+        border-radius: 0.25rem;
+    }
+</style>

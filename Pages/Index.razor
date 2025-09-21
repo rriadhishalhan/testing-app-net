@@ -1,0 +1,77 @@
+﻿@page "/"
+
+<PageTitle>Streamlit-like .NET App</PageTitle>
+
+<div class="container">
+    <div class="row">
+        <div class="col-12 text-center">
+            <h1 class="display-4">🚀 Welcome to Streamlit-like .NET App!</h1>
+            <p class="lead">Build interactive web applications with .NET Blazor, similar to Python's Streamlit</p>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">🎯 Interactive Components</h5>
+                    <p class="card-text">
+                        Easily create interactive web UIs with components like sliders, text inputs, 
+                        buttons, and more - just like Streamlit in Python!
+                    </p>
+                    <a href="/streamlit-demo" class="btn btn-primary">Try the Demo</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">📊 Data Visualization</h5>
+                    <p class="card-text">
+                        Display metrics, charts, and data visualizations with minimal code. 
+                        Perfect for dashboards and data applications.
+                    </p>
+                    <a href="/streamlit-demo" class="btn btn-outline-primary">View Examples</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="alert alert-info">
+                <h6 class="alert-heading">✨ Features Available:</h6>
+                <ul class="mb-0">
+                    <li><strong>StTextInput</strong> - Text input with real-time binding</li>
+                    <li><strong>StSlider</strong> - Interactive range slider</li>
+                    <li><strong>StButton</strong> - Customizable buttons with events</li>
+                    <li><strong>StSelectbox</strong> - Dropdown selection component</li>
+                    <li><strong>StMetric</strong> - Display key metrics with delta indicators</li>
+                    <li><strong>StChart</strong> - Chart visualization placeholder</li>
+                    <li><strong>StContainer</strong> - Organized content containers</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+        border: 1px solid #e0e0e0;
+        border-radius: 0.5rem;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        transition: transform 0.2s ease-in-out;
+    }
+    
+    .card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    }
+    
+    .alert-info {
+        background-color: #e7f3ff;
+        border-color: #b8daff;
+        color: #004085;
+    }
+</style>

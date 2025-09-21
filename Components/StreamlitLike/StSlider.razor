@@ -1,0 +1,53 @@
+@using Microsoft.AspNetCore.Components
+
+<div class="st-slider-group">
+    <label for="@Id" class="form-label">@Label: @Value</label>
+    <input @bind="Value" @bind:event="oninput" @onchange="OnValueChanged" 
+           type="range" class="form-range" id="@Id" 
+           min="@Min" max="@Max" step="@Step" />
+    <div class="range-labels">
+        <span>@Min</span>
+        <span>@Max</span>
+    </div>
+</div>
+
+@code {
+    [Parameter] public string Label { get; set; } = "";
+    [Parameter] public double Value { get; set; } = 0;
+    [Parameter] public double Min { get; set; } = 0;
+    [Parameter] public double Max { get; set; } = 100;
+    [Parameter] public double Step { get; set; } = 1;
+    [Parameter] public EventCallback<double> ValueChanged { get; set; }
+    [Parameter] public string Id { get; set; } = Guid.NewGuid().ToString();
+
+    private async Task OnValueChanged()
+    {
+        await ValueChanged.InvokeAsync(Value);
+    }
+}
+
+<style>
+    .st-slider-group {
+        margin: 1rem 0;
+    }
+    
+    .form-label {
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+        color: #333;
+        display: block;
+    }
+    
+    .form-range {
+        width: 100%;
+        margin: 0.5rem 0;
+    }
+    
+    .range-labels {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.875rem;
+        color: #666;
+        margin-top: 0.25rem;
+    }
+</style>
