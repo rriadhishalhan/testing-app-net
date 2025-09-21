@@ -1,0 +1,222 @@
+@model StreamlitLikeApp.Models.WeatherViewModel
+@{
+    ViewData["Title"] = "Weather Forecast";
+}
+
+<div class="container">
+    <h1>🌤️ Weather Forecast</h1>
+    <p class="lead">Data fetched via Repository pattern from external API</p>
+
+    <!-- Refresh Button -->
+    <div class="st-button-group">
+        <button id="refreshBtn" class="btn btn-primary">🔄 Refresh Data</button>
+        <button id="loadSpecificDate" class="btn btn-outline-secondary">📅 Load Specific Date</button>
+    </div>
+
+    <!-- Loading indicator -->
+    <div id="loadingIndicator" class="d-none">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <span class="ms-2">Fetching weather data...</span>
+    </div>
+
+    <!-- Weather Data Display -->
+    <div id="weatherContainer" class="row mt-4">
+        @if (Model.Forecasts.Any())
+        {
+            @foreach (var forecast in Model.Forecasts)
+            {
+                <div class="col-md-4 mb-3">
+                    <div class="st-metric-container">
+                        <div class="metric-card">
+                            <div class="metric-label">@forecast.Date.ToString("MMM dd, yyyy")</div>
+                            <div class="metric-value">@forecast.TemperatureC°C</div>
+                            <div class="metric-delta delta-normal">
+                                <span>@forecast.TemperatureF°F</span>
+                            </div>
+                            <div class="metric-help">@forecast.Summary</div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="col-12">
+                <div class="alert alert-info">
+                    <h6 class="alert-heading">No weather data available</h6>
+                    <p class="mb-0">Click the refresh button to load weather forecast data.</p>
+                </div>
+            </div>
+        }
+    </div>
+
+    <!-- Date picker for specific weather -->
+    <div id="datePickerSection" class="d-none mt-4">
+        <div class="st-container">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Get Weather for Specific Date</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="st-input-group">
+                                <label for="weatherDate" class="form-label">Select Date</label>
+                                <input type="date" id="weatherDate" class="form-control" />
+                            </div>
+                            <button id="getWeatherBtn" class="btn btn-success">Get Weather</button>
+                        </div>
+                        <div class="col-md-6">
+                            <div id="specificWeatherResult"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- API Integration Demo -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="st-container">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">📡 Repository Pattern Demo</h5>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>This page demonstrates:</strong></p>
+                        <ul>
+                            <li><strong>Repository Pattern:</strong> <code>IWeatherRepository</code> interface for data access</li>
+                            <li><strong>Dependency Injection:</strong> Repository injected into controller</li>
+                            <li><strong>Async Operations:</strong> Non-blocking API calls with proper error handling</li>
+                            <li><strong>MVC Architecture:</strong> Clean separation between controller, view, and data layer</li>
+                            <li><strong>AJAX Integration:</strong> Real-time updates without page refresh</li>
+                        </ul>
+                        
+                        <div class="alert alert-light">
+                            <h6>Code Structure:</h6>
+                            <code>
+                                Controller → Repository → External API/Database<br />
+                                WeatherController → IWeatherRepository → HTTP API calls
+                            </code>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const refreshBtn = document.getElementById('refreshBtn');
+            const loadSpecificDateBtn = document.getElementById('loadSpecificDate');
+            const datePickerSection = document.getElementById('datePickerSection');
+            const getWeatherBtn = document.getElementById('getWeatherBtn');
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            const weatherContainer = document.getElementById('weatherContainer');
+
+            // Refresh weather data
+            refreshBtn.addEventListener('click', async function() {
+                showLoading(true);
+                
+                try {
+                    const response = await fetch('@Url.Action("GetWeatherData", "Weather")');
+                    const data = await response.json();
+                    
+                    if (data.error) {
+                        throw new Error(data.error);
+                    }
+                    
+                    displayWeatherData(data);
+                } catch (error) {
+                    console.error('Error fetching weather data:', error);
+                    weatherContainer.innerHTML = `
+                        <div class="col-12">
+                            <div class="alert alert-danger">
+                                <h6 class="alert-heading">Error loading weather data</h6>
+                                <p class="mb-0">Please try again later.</p>
+                            </div>
+                        </div>
+                    `;
+                } finally {
+                    showLoading(false);
+                }
+            });
+
+            // Toggle date picker
+            loadSpecificDateBtn.addEventListener('click', function() {
+                datePickerSection.classList.toggle('d-none');
+            });
+
+            // Get weather for specific date
+            getWeatherBtn.addEventListener('click', async function() {
+                const dateInput = document.getElementById('weatherDate');
+                const resultDiv = document.getElementById('specificWeatherResult');
+                
+                if (!dateInput.value) {
+                    alert('Please select a date');
+                    return;
+                }
+
+                try {
+                    const response = await fetch(`@Url.Action("GetWeatherByDate", "Weather")?date=${dateInput.value}`);
+                    const data = await response.json();
+                    
+                    if (response.ok) {
+                        resultDiv.innerHTML = `
+                            <div class="st-metric-container">
+                                <div class="metric-card">
+                                    <div class="metric-label">${new Date(data.date).toLocaleDateString()}</div>
+                                    <div class="metric-value">${data.temperatureC}°C</div>
+                                    <div class="metric-delta delta-normal">
+                                        <span>${data.temperatureF}°F</span>
+                                    </div>
+                                    <div class="metric-help">${data.summary}</div>
+                                </div>
+                            </div>
+                        `;
+                    } else {
+                        throw new Error('Weather data not found');
+                    }
+                } catch (error) {
+                    resultDiv.innerHTML = `
+                        <div class="alert alert-warning">
+                            <small>Unable to fetch weather data for the selected date.</small>
+                        </div>
+                    `;
+                }
+            });
+
+            function showLoading(show) {
+                if (show) {
+                    loadingIndicator.classList.remove('d-none');
+                    refreshBtn.disabled = true;
+                } else {
+                    loadingIndicator.classList.add('d-none');
+                    refreshBtn.disabled = false;
+                }
+            }
+
+            function displayWeatherData(forecasts) {
+                weatherContainer.innerHTML = forecasts.map(forecast => `
+                    <div class="col-md-4 mb-3">
+                        <div class="st-metric-container">
+                            <div class="metric-card">
+                                <div class="metric-label">${new Date(forecast.date).toLocaleDateString()}</div>
+                                <div class="metric-value">${forecast.temperatureC}°C</div>
+                                <div class="metric-delta delta-normal">
+                                    <span>${forecast.temperatureF}°F</span>
+                                </div>
+                                <div class="metric-help">${forecast.summary}</div>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        });
+    </script>
+}

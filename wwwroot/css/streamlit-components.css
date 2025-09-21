@@ -1,0 +1,283 @@
+/* Streamlit-like Component Styles */
+
+/* Container Styles */
+.st-container {
+    margin: 1rem 0;
+}
+
+.st-container .card {
+    border: 1px solid #e0e0e0;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.st-container .card-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #e0e0e0;
+    padding: 1rem;
+    border-radius: 0.5rem 0.5rem 0 0;
+}
+
+.st-container .card-body {
+    padding: 1rem;
+}
+
+/* Input Group Styles */
+.st-input-group {
+    margin: 1rem 0;
+}
+
+.st-input-group .form-label {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    color: #333;
+}
+
+.st-input-group .form-control {
+    border: 1px solid #ddd;
+    border-radius: 0.375rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 1rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.st-input-group .form-control:focus {
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* Slider Styles */
+.st-slider-group {
+    margin: 1rem 0;
+}
+
+.st-slider-group .form-label {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    color: #333;
+    display: block;
+}
+
+.st-slider-group .form-range {
+    width: 100%;
+    margin: 0.5rem 0;
+}
+
+.st-slider-group .range-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.875rem;
+    color: #666;
+    margin-top: 0.25rem;
+}
+
+/* Button Styles */
+.st-button-group {
+    margin: 1rem 0;
+}
+
+.st-button-group .btn {
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    border: 1px solid transparent;
+    font-size: 1rem;
+    font-weight: 400;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.15s ease-in-out;
+}
+
+/* Selectbox Styles */
+.st-selectbox-group {
+    margin: 1rem 0;
+}
+
+.st-selectbox-group .form-label {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    color: #333;
+}
+
+.st-selectbox-group .form-select {
+    border: 1px solid #ddd;
+    border-radius: 0.375rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 1rem;
+    background-color: white;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.st-selectbox-group .form-select:focus {
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* Metric Styles */
+.st-metric-container {
+    margin: 1rem 0;
+}
+
+.st-metric-container .metric-card {
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.st-metric-container .metric-label {
+    font-size: 0.875rem;
+    color: #666;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.st-metric-container .metric-value {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 0.25rem;
+}
+
+.st-metric-container .metric-delta {
+    font-size: 0.875rem;
+    margin-bottom: 0.5rem;
+}
+
+.st-metric-container .delta-positive .positive {
+    color: #198754;
+}
+
+.st-metric-container .delta-negative .negative {
+    color: #dc3545;
+}
+
+.st-metric-container .delta-normal {
+    color: #666;
+}
+
+.st-metric-container .metric-help {
+    font-size: 0.75rem;
+    color: #999;
+    font-style: italic;
+}
+
+/* Chart Styles */
+.st-chart-container {
+    margin: 1rem 0;
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.st-chart-container .chart-header h5 {
+    margin: 0 0 1rem 0;
+    color: #333;
+    font-weight: 500;
+}
+
+.st-chart-container .chart-content {
+    text-align: center;
+}
+
+.st-chart-container canvas {
+    border: 1px solid #ddd;
+    border-radius: 0.25rem;
+}
+
+/* Calculator Result Styles */
+.calculation-result {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin-top: 1rem;
+}
+
+.calculation-result .result-display {
+    font-size: 1.25rem;
+    color: #333;
+    margin-top: 0.5rem;
+    font-family: monospace;
+}
+
+/* Alert Styles */
+.alert {
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin: 1rem 0;
+}
+
+.alert-info {
+    background-color: #d1ecf1;
+    border-color: #bee5eb;
+    color: #0c5460;
+}
+
+.alert-secondary {
+    background-color: #f8f9fa;
+    border-color: #e9ecef;
+    color: #6c757d;
+}
+
+/* Card Hover Effects */
+.card {
+    transition: transform 0.2s ease-in-out;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+/* Loading Animation */
+.spinner-border {
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .st-metric-container .metric-value {
+        font-size: 1.5rem;
+    }
+    
+    .calculation-result .result-display {
+        font-size: 1rem;
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .st-container .card {
+        background-color: #2d3748;
+        border-color: #4a5568;
+        color: #e2e8f0;
+    }
+    
+    .st-container .card-header {
+        background-color: #4a5568;
+        border-color: #718096;
+    }
+    
+    .st-metric-container .metric-card {
+        background-color: #2d3748;
+        border-color: #4a5568;
+        color: #e2e8f0;
+    }
+    
+    .st-metric-container .metric-value {
+        color: #e2e8f0;
+    }
+    
+    .calculation-result {
+        background-color: #4a5568;
+        border-color: #718096;
+        color: #e2e8f0;
+    }
+}

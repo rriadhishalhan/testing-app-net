@@ -1,6 +1,6 @@
-# 🚀 Streamlit-like .NET Web App
+# 🚀 Streamlit-like .NET Web App (MVC Architecture)
 
-A .NET web application built with Blazor Server that provides interactive UI components similar to Python's Streamlit library. This project demonstrates how to create data-driven web applications with minimal code using familiar Streamlit-style components.
+A .NET web application built with ASP.NET Core MVC that provides interactive UI components similar to Python's Streamlit library. This project follows the traditional MVC pattern with Controllers, Views, Models, and Repository pattern for clean separation of concerns.
 
 ## ✨ Features
 
@@ -13,12 +13,14 @@ A .NET web application built with Blazor Server that provides interactive UI com
 - **StChart** - Chart visualization placeholder (ready for Chart.js integration)
 - **StContainer** - Organized content containers with titles
 
-### Key Benefits
-- 🎯 **Simple API** - Streamlit-like component interface
-- ⚡ **Real-time Updates** - Blazor Server provides instant UI updates
-- 🔄 **State Management** - Built-in state management service
+### Architecture Benefits
+- �️ **MVC Pattern** - Controllers handle HTTP requests, Views render UI, Models manage data
+- 📡 **Repository Pattern** - Clean abstraction for data access and API calls
+- 🔄 **Dependency Injection** - Proper service registration and injection
+- ⚡ **Real-time Updates** - AJAX-powered interactions without page refreshes
+- 🎯 **Simple API** - Streamlit-like component interface in Razor views
 - 📱 **Responsive Design** - Bootstrap-based responsive components
-- 🛠️ **Extensible** - Easy to add new components and features
+- 🛠️ **Extensible** - Easy to add new controllers, views, and repositories
 
 ## 🚀 Getting Started
 
@@ -55,80 +57,113 @@ A .NET web application built with Blazor Server that provides interactive UI com
 
 ## 🎮 Usage Examples
 
-### Basic Text Input
+### Controller with Repository Pattern
 ```csharp
-<StTextInput Label="Enter your name" 
-           Placeholder="Type here..." 
-           @bind-Value="userName" />
+[HttpGet]
+public async Task<IActionResult> GetWeatherData()
+{
+    try
+    {
+        var forecasts = await _weatherRepository.GetWeatherForecastAsync();
+        return Json(forecasts);
+    }
+    catch (Exception ex)
+    {
+        _logger.LogError(ex, "Error fetching weather data");
+        return Json(new { error = "Failed to fetch weather data" });
+    }
+}
 ```
 
-### Interactive Slider
-```csharp
-<StSlider Label="Select age" 
-        Min="0" Max="120" Step="1" 
-        @bind-Value="userAge" />
+### Streamlit-like Components in Views
+```html
+<!-- Text Input -->
+<div class="st-input-group">
+    <label for="userName" class="form-label">Enter your name</label>
+    <input type="text" id="userName" class="form-control" 
+           placeholder="Type here..." value="@Model.UserName" />
+</div>
+
+<!-- Interactive Slider -->
+<div class="st-slider-group">
+    <label for="userAge" class="form-label">Age: <span id="ageValue">@Model.UserAge</span></label>
+    <input type="range" id="userAge" class="form-range" 
+           min="0" max="120" step="1" value="@Model.UserAge" />
+</div>
+
+<!-- Metric Display -->
+<div class="st-metric-container">
+    <div class="metric-card">
+        <div class="metric-label">Total Users</div>
+        <div class="metric-value">@Model.TotalUsers</div>
+        <div class="metric-delta delta-positive">
+            <span class="positive">↗️ +12</span>
+        </div>
+    </div>
+</div>
 ```
 
-### Dropdown Selection
+### Repository Implementation
 ```csharp
-<StSelectbox Label="Choose color" 
-           Options="@colorOptions" 
-           @bind-SelectedValue="selectedColor" />
-```
-
-### Metric Display
-```csharp
-<StMetric Label="Total Users" 
-        Value="@totalUsers.ToString()" 
-        Delta="+12" 
-        DeltaColor="positive" />
-```
-
-### Button with Event
-```csharp
-<StButton Text="Submit" 
-        ButtonType="primary" 
-        OnClick="ProcessData" />
-```
-
-### Container Grouping
-```csharp
-<StContainer Title="User Input">
-    <!-- Your components here -->
-</StContainer>
+public class WeatherRepository : IWeatherRepository
+{
+    private readonly HttpClient _httpClient;
+    
+    public async Task<List<WeatherForecast>> GetWeatherForecastAsync()
+    {
+        // Call external API
+        var response = await _httpClient.GetAsync("api/weather");
+        // Process and return data
+        return forecasts;
+    }
+}
 ```
 
 ## 📊 Demo Application
 
-The project includes a comprehensive demo at `/streamlit-demo` that showcases:
+The project includes comprehensive demos accessible through:
 
-1. **User Input Form** - Text input, sliders, and dropdowns
-2. **Live Results Display** - Real-time updates based on user input
-3. **Metrics Dashboard** - Key performance indicators with delta changes
-4. **Interactive Calculator** - Real-time calculations with sliders
-5. **Chart Visualization** - Placeholder for data charts
+1. **Home Page** (`/`) - Overview and features
+2. **Interactive Demo** (`/Home/Demo`) - Streamlit-like UI components with:
+   - User input forms with real-time validation
+   - Interactive sliders and dropdowns
+   - Live calculation results
+   - Metrics dashboard with KPIs
+   - AJAX-powered updates without page refresh
+3. **Weather Demo** (`/Weather`) - Repository pattern demonstration with:
+   - External API integration
+   - Async data fetching
+   - Error handling and loading states
+   - Real-time data updates
 
 ## 🏗️ Project Structure
 
 ```
 StreamlitLikeApp/
-├── Components/
-│   └── StreamlitLike/          # Streamlit-style components
-│       ├── StTextInput.razor
-│       ├── StSlider.razor
-│       ├── StButton.razor
-│       ├── StSelectbox.razor
-│       ├── StMetric.razor
-│       ├── StChart.razor
-│       └── StContainer.razor
-├── Services/
+├── Controllers/                 # MVC Controllers
+│   ├── HomeController.cs       # Main app controller
+│   └── WeatherController.cs    # Weather data controller
+├── Models/                     # Data models and ViewModels
+│   └── ViewModels.cs           # View models for data binding
+├── Views/                      # Razor views
+│   ├── Home/
+│   │   ├── Index.cshtml        # Home page
+│   │   └── Demo.cshtml         # Streamlit demo page
+│   ├── Weather/
+│   │   └── Index.cshtml        # Weather with repository demo
+│   └── Shared/
+│       └── _Layout.cshtml      # Main layout
+├── Repositories/               # Repository pattern implementation
+│   ├── IRepositories.cs        # Repository interfaces
+│   └── Repositories.cs         # Repository implementations
+├── Services/                   # Business services
 │   └── StreamlitService.cs     # State management service
-├── Pages/
-│   ├── Index.razor             # Home page
-│   └── StreamlitDemo.razor     # Demo page
-├── Shared/                     # Shared components
-├── Data/                       # Data services
-└── wwwroot/                    # Static files
+├── wwwroot/                    # Static files
+│   ├── css/
+│   │   └── streamlit-components.css  # Streamlit-style CSS
+│   └── js/
+│       └── streamlit-components.js   # Interactive JavaScript
+└── Components/                 # Legacy Blazor components (can be removed)
 ```
 
 ## 🔧 Component API Reference

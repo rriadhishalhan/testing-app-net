@@ -1,0 +1,91 @@
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">🚀 Welcome to Streamlit-like .NET App!</h1>
+    <p class="lead">Build interactive web applications with .NET MVC, similar to Python's Streamlit</p>
+</div>
+
+<div class="container">
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">🎯 Interactive Components</h5>
+                    <p class="card-text">
+                        Easily create interactive web UIs with components like sliders, text inputs, 
+                        buttons, and more - just like Streamlit in Python!
+                    </p>
+                    <a href="@Url.Action("Demo", "Home")" class="btn btn-primary">Try the Demo</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">📊 Data Visualization</h5>
+                    <p class="card-text">
+                        Display metrics, charts, and data visualizations with minimal code. 
+                        Perfect for dashboards and data applications.
+                    </p>
+                    <a href="@Url.Action("Demo", "Home")" class="btn btn-outline-primary">View Examples</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">🏗️ MVC Architecture</h5>
+                    <p class="card-text">
+                        Built with familiar MVC pattern - Controllers, Views, Models, and Repository pattern 
+                        for clean separation of concerns.
+                    </p>
+                    <ul class="small">
+                        <li><strong>Controllers:</strong> Handle HTTP requests and business logic</li>
+                        <li><strong>Views:</strong> Razor templates with Streamlit-like helpers</li>
+                        <li><strong>Repository:</strong> Data access and API calls</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">🔧 Features Available</h5>
+                    <ul class="mb-0 small">
+                        <li><strong>Text Input</strong> - Real-time text input with validation</li>
+                        <li><strong>Slider</strong> - Interactive range slider</li>
+                        <li><strong>Dropdown</strong> - Selection components</li>
+                        <li><strong>Buttons</strong> - Customizable action buttons</li>
+                        <li><strong>Metrics</strong> - KPI displays with delta indicators</li>
+                        <li><strong>Charts</strong> - Data visualization components</li>
+                        <li><strong>API Integration</strong> - Repository pattern for external calls</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+        border: 1px solid #e0e0e0;
+        border-radius: 0.5rem;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        transition: transform 0.2s ease-in-out;
+    }
+    
+    .card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    }
+</style>

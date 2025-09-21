@@ -1,0 +1,253 @@
+@model StreamlitLikeApp.Models.DemoViewModel
+@{
+    ViewData["Title"] = "Streamlit Demo";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <h1>🚀 Streamlit-like Demo in .NET MVC</h1>
+            <p class="lead">This demo showcases interactive UI components similar to Python's Streamlit library.</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <!-- User Input Section -->
+            <div class="st-container">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="mb-0">User Input</h4>
+                    </div>
+                    <div class="card-body">
+                        <form id="userForm">
+                            <div class="st-input-group">
+                                <label for="userName" class="form-label">Enter your name</label>
+                                <input type="text" id="userName" name="userName" class="form-control" 
+                                       placeholder="Type your name here..." value="@Model.UserName" />
+                            </div>
+                            
+                            <div class="st-slider-group">
+                                <label for="userAge" class="form-label">Select your age: <span id="ageValue">@Model.UserAge</span></label>
+                                <input type="range" id="userAge" name="userAge" class="form-range" 
+                                       min="0" max="120" step="1" value="@Model.UserAge" />
+                                <div class="range-labels">
+                                    <span>0</span>
+                                    <span>120</span>
+                                </div>
+                            </div>
+                            
+                            <div class="st-selectbox-group">
+                                <label for="favoriteColor" class="form-label">Choose your favorite color</label>
+                                <select id="favoriteColor" name="favoriteColor" class="form-select">
+                                    @foreach (var color in Model.ColorOptions)
+                                    {
+                                        <option value="@color" selected="@(color == Model.FavoriteColor)">@color</option>
+                                    }
+                                </select>
+                            </div>
+                            
+                            <div class="st-button-group">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <!-- Live Results Section -->
+            <div class="st-container">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="mb-0">Live Results</h4>
+                    </div>
+                    <div class="card-body">
+                        <div id="resultsDisplay">
+                            @if (!string.IsNullOrEmpty(Model.UserName))
+                            {
+                                <div class="alert alert-info">
+                                    <strong>Hello, @Model.UserName!</strong><br />
+                                    Age: @Model.UserAge years old<br />
+                                    Favorite Color: @Model.FavoriteColor
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="alert alert-secondary">
+                                    Enter your information to see results here.
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Metrics Row -->
+    <div class="row">
+        <div class="col-md-4">
+            <div class="st-metric-container">
+                <div class="metric-card">
+                    <div class="metric-label">Total Users</div>
+                    <div class="metric-value">@Model.TotalUsers</div>
+                    <div class="metric-delta delta-positive">
+                        <span class="positive">↗️ +12</span>
+                    </div>
+                    <div class="metric-help">Number of users who submitted the form</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="st-metric-container">
+                <div class="metric-card">
+                    <div class="metric-label">Average Age</div>
+                    <div class="metric-value">@Model.AverageAge.ToString("F1")</div>
+                    <div class="metric-delta delta-negative">
+                        <span class="negative">↘️ -2.3</span>
+                    </div>
+                    <div class="metric-help">Average age of all users</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="st-metric-container">
+                <div class="metric-card">
+                    <div class="metric-label">Most Popular Color</div>
+                    <div class="metric-value">@Model.MostPopularColor</div>
+                    <div class="metric-help">Most frequently chosen color</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Calculator Section -->
+    <div class="row">
+        <div class="col-12">
+            <div class="st-container">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="mb-0">Interactive Calculator</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="st-slider-group">
+                                    <label for="firstNumber" class="form-label">First Number: <span id="firstNumberValue">@Model.FirstNumber</span></label>
+                                    <input type="range" id="firstNumber" name="firstNumber" class="form-range" 
+                                           min="0" max="100" step="1" value="@Model.FirstNumber" />
+                                </div>
+                                
+                                <div class="st-slider-group">
+                                    <label for="secondNumber" class="form-label">Second Number: <span id="secondNumberValue">@Model.SecondNumber</span></label>
+                                    <input type="range" id="secondNumber" name="secondNumber" class="form-range" 
+                                           min="0" max="100" step="1" value="@Model.SecondNumber" />
+                                </div>
+                                
+                                <div class="st-selectbox-group">
+                                    <label for="operation" class="form-label">Operation</label>
+                                    <select id="operation" name="operation" class="form-select">
+                                        @foreach (var op in Model.OperationOptions)
+                                        {
+                                            <option value="@op" selected="@(op == Model.SelectedOperation)">@op</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="calculation-result">
+                                    <h3>Result</h3>
+                                    <div class="result-display" id="calculationResult">
+                                        @Model.FirstNumber + @Model.SecondNumber = <strong>@(Model.FirstNumber + Model.SecondNumber)</strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Real-time updates for sliders and form inputs
+        document.addEventListener('DOMContentLoaded', function() {
+            const userAgeSlider = document.getElementById('userAge');
+            const ageValue = document.getElementById('ageValue');
+            const firstNumberSlider = document.getElementById('firstNumber');
+            const firstNumberValue = document.getElementById('firstNumberValue');
+            const secondNumberSlider = document.getElementById('secondNumber');
+            const secondNumberValue = document.getElementById('secondNumberValue');
+            const operationSelect = document.getElementById('operation');
+            const calculationResult = document.getElementById('calculationResult');
+
+            // Update age display
+            userAgeSlider.addEventListener('input', function() {
+                ageValue.textContent = this.value;
+            });
+
+            // Update calculator
+            function updateCalculation() {
+                const first = parseFloat(firstNumberSlider.value);
+                const second = parseFloat(secondNumberSlider.value);
+                const operation = operationSelect.value;
+
+                firstNumberValue.textContent = first;
+                secondNumberValue.textContent = second;
+
+                // Calculate result via AJAX
+                fetch('@Url.Action("Calculate", "Home")', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+                    },
+                    body: JSON.stringify({
+                        firstNumber: first,
+                        secondNumber: second,
+                        operation: operation
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    calculationResult.innerHTML = `${data.firstNumber} ${data.operation} ${data.secondNumber} = <strong>${data.result}</strong>`;
+                });
+            }
+
+            firstNumberSlider.addEventListener('input', updateCalculation);
+            secondNumberSlider.addEventListener('input', updateCalculation);
+            operationSelect.addEventListener('change', updateCalculation);
+
+            // Form submission
+            document.getElementById('userForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const formData = new FormData(this);
+                
+                fetch('@Url.Action("SubmitUserData", "Home")', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById('resultsDisplay').innerHTML = `
+                            <div class="alert alert-info">
+                                <strong>Hello, ${data.userName}!</strong><br />
+                                Age: ${data.userAge} years old<br />
+                                Favorite Color: ${data.favoriteColor}
+                            </div>
+                        `;
+                    }
+                });
+            });
+        });
+    </script>
+}
